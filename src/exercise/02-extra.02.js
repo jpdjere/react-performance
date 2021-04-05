@@ -1,10 +1,11 @@
-// React.memo for reducing unnecessary re-renders
-// http://localhost:3000/isolated/exercise/03.js
+// useMemo for expensive calculations
+// http://localhost:3000/isolated/exercise/02.js
 
 import * as React from 'react'
 import {useCombobox} from '../use-combobox'
 import {getItems} from '../workerized-filter-cities'
-import {useAsync, useForceRerender} from '../utils'
+import {useForceRerender} from '../utils'
+import {useAsync} from './../utils'
 
 function Menu({
   items,
@@ -30,8 +31,6 @@ function Menu({
     </ul>
   )
 }
-// 🐨 Memoize the Menu here using React.memo
-Menu = React.memo(Menu)
 
 function ListItem({
   getItemProps,
@@ -57,18 +56,16 @@ function ListItem({
     />
   )
 }
-// 🐨 Memoize the ListItem here using React.memo
-ListItem = React.memo(ListItem)
 
 function App() {
   const forceRerender = useForceRerender()
   const [inputValue, setInputValue] = React.useState('')
 
-  const {data: allItems, run} = useAsync({data: [], status: 'pending'})
+  const {data, run} = useAsync({data: []})
   React.useEffect(() => {
     run(getItems(inputValue))
   }, [inputValue, run])
-  const items = allItems.slice(0, 100)
+  const items = data.slice(0, 100)
 
   const {
     selectedItem,
@@ -116,8 +113,3 @@ function App() {
 }
 
 export default App
-
-/*
-eslint
-  no-func-assign: 0,
-*/

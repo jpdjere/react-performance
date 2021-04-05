@@ -57,8 +57,19 @@ function ListItem({
     />
   )
 }
-// 🐨 Memoize the ListItem here using React.memo
-ListItem = React.memo(ListItem)
+
+// JP: React.memo accepts a second argument which is a custom compare function
+// that allows us to compare the props and return true if rendering the component
+// again is unnecessary and false if it is necessary.
+ListItem = React.memo(ListItem, (prevProps, nextProps) => {
+  const previousHighlighted =
+    prevProps.highlightedIndex === prevProps.index &&
+    nextProps.highlightedIndex !== nextProps.index
+  const newHighlighted =
+    prevProps.highlightedIndex !== prevProps.index &&
+    nextProps.highlightedIndex === nextProps.index
+  return !(previousHighlighted || newHighlighted)
+})
 
 function App() {
   const forceRerender = useForceRerender()

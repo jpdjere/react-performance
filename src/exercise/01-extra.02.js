@@ -9,6 +9,10 @@ import * as React from 'react'
 // to get the Globe component from the '../globe' module.
 const Globe = React.lazy(() => import('../globe'))
 
+function eagerLoadGlobe() {
+  import(/* webpackPrefetch: true */ '../globe')
+}
+
 function App() {
   const [showGlobe, setShowGlobe] = React.useState(false)
 
@@ -27,7 +31,11 @@ function App() {
         padding: '2rem',
       }}
     >
-      <label style={{marginBottom: '1rem'}}>
+      <label
+        style={{marginBottom: '1rem'}}
+        onMouseOver={eagerLoadGlobe}
+        onFocus={eagerLoadGlobe}
+      >
         <input
           type="checkbox"
           checked={showGlobe}

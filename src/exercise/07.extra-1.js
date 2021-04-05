@@ -1,22 +1,21 @@
 // Production performance monitoring
-// 💯 use the experimental trace API
-// http://localhost:3000/isolated/final/07.extra-1.js
+// http://localhost:3000/isolated/exercise/07.js
 
 import * as React from 'react'
-import {unstable_trace as trace} from 'scheduler/tracing'
+// 🐨 you're going to need the reportProfile function
+// 💰 here, let me help you with that...
 import reportProfile from '../report-profile'
 
 function Counter() {
   const [count, setCount] = React.useState(0)
-  const increment = () =>
-    trace('click', performance.now(), () => setCount(c => c + 1))
+  const increment = () => setCount(c => c + 1)
   return <button onClick={increment}>{count}</button>
 }
 
 function App() {
   return (
     <div>
-      <React.Profiler id="counter" onRender={reportProfile}>
+      <React.Profiler id={"counter"} onRender={reportProfile}>
         <div>
           Profiled counter
           <Counter />
